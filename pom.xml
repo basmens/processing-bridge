@@ -36,6 +36,7 @@
       <groupId>org.processing</groupId>
       <artifactId>core</artifactId>
       <version>3.5.4</version>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
