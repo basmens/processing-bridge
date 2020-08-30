@@ -2,9 +2,13 @@ package nl.benmens.processing.mvc;
 
 import java.util.ArrayList;
 
+import nl.benmens.processing.observer.SubscriptionManager;
+
 public class Controller {
   private Controller parentController = null;
   protected ArrayList<Controller> childControllers = new ArrayList<Controller>();
+
+  protected SubscriptionManager subscriptionManager = new SubscriptionManager();
 
   public Controller(Controller parentController) {
     if (parentController != null) {

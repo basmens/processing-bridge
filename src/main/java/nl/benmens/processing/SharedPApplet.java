@@ -35,6 +35,8 @@ public class SharedPApplet {
   public static Subject<KeyEventsHandler> keyEvents;
   public static Subject<MouseEventsHandler> mouseEvents;
 
+  public static boolean[] keysPressed = new boolean[128];
+
   private SharedPApplet() {}
 
   static public void rect(float a, float b, float c, float d) {

@@ -14,8 +14,8 @@ public class View {
   private View parentView = null;
   protected ArrayList<View> childViews = new ArrayList<View>();
 
-  private Rectangle2D.Float frameRect; // View dimension in Parent coordinates
-  private Rectangle2D.Float boundsRect; // View dimension
+  public Rectangle2D.Float frameRect; // View dimension in Parent coordinates
+  public Rectangle2D.Float boundsRect; // View dimension
 
   public boolean shouldClip = false;
   public boolean isVisible = true;
@@ -61,39 +61,79 @@ public class View {
         public void mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
           View targetView = getViewAtPos(mouseX, mouseY);
 
-          PVector mousePos = screenPosToViewPos(new PVector(mouseX, mouseY));
-          PVector pmousePos = screenPosToViewPos(new PVector(pmouseX, pmouseY));
-
-          targetView.mousePressed(mousePos.x, mousePos.y, pmousePos.x, pmousePos.y);
+          while (targetView != null) {
+            PVector mousePos = targetView.screenPosToViewPos(new PVector(mouseX, mouseY));
+            PVector pmousePos = targetView.screenPosToViewPos(new PVector(pmouseX, pmouseY));
+    
+            if (targetView.mousePressed(mousePos.x, mousePos.y, pmousePos.x, pmousePos.y)) {
+              break;
+            } else {
+              targetView = targetView.parentView;
+            }
+          }
         }
 
         @Override
         public void mouseReleased(float mouseX, float mouseY, float pmouseX, float pmouseY) {
           View targetView = getViewAtPos(mouseX, mouseY);
 
-          PVector mousePos = screenPosToViewPos(new PVector(mouseX, mouseY));
-          PVector pmousePos = screenPosToViewPos(new PVector(pmouseX, pmouseY));
-
-          targetView.mouseReleased(mousePos.x, mousePos.y, pmousePos.x, pmousePos.y);
+          while (targetView != null) {
+            PVector mousePos = targetView.screenPosToViewPos(new PVector(mouseX, mouseY));
+            PVector pmousePos = targetView.screenPosToViewPos(new PVector(pmouseX, pmouseY));
+    
+            if (targetView.mouseReleased(mousePos.x, mousePos.y, pmousePos.x, pmousePos.y)) {
+              break;
+            } else {
+              targetView = targetView.parentView;
+            }
+          }
         }
 
         @Override
         public void mouseMoved(float mouseX, float mouseY, float pmouseX, float pmouseY) {
           View targetView = getViewAtPos(mouseX, mouseY);
 
-          PVector mousePos = screenPosToViewPos(new PVector(mouseX, mouseY));
-          PVector pmousePos = screenPosToViewPos(new PVector(pmouseX, pmouseY));
+          while (targetView != null) {
+            PVector mousePos = targetView.screenPosToViewPos(new PVector(mouseX, mouseY));
+            PVector pmousePos = targetView.screenPosToViewPos(new PVector(pmouseX, pmouseY));
+    
+            if (targetView.mouseMoved(mousePos.x, mousePos.y, pmousePos.x, pmousePos.y)) {
+              break;
+            } else {
+              targetView = targetView.parentView;
+            }
+          }
+        }
 
-          targetView.mouseMoved(mousePos.x, mousePos.y, pmousePos.x, pmousePos.y);
+        @Override
+        public void mouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+          View targetView = getViewAtPos(mouseX, mouseY);
+
+          while (targetView != null) {
+            PVector mousePos = targetView.screenPosToViewPos(new PVector(mouseX, mouseY));
+            PVector pmousePos = targetView.screenPosToViewPos(new PVector(pmouseX, pmouseY));
+    
+            if (targetView.mouseDragged(mousePos.x, mousePos.y, pmousePos.x, pmousePos.y)) {
+              break;
+            } else {
+              targetView = targetView.parentView;
+            }
+          }
         }
 
         @Override
         public void mouseWheel(float mouseX, float mouseY, int count) {
           View targetView = getViewAtPos(mouseX, mouseY);
 
-          PVector mousePos = screenPosToViewPos(new PVector(mouseX, mouseY));
-
-          targetView.mouseWheel(mousePos.x, mousePos.y, count);
+          while (targetView != null) {
+            PVector mousePos = targetView.screenPosToViewPos(new PVector(mouseX, mouseY));
+    
+            if (targetView.mouseWheel(mousePos.x, mousePos.y, count)) {
+              break;
+            } else {
+              targetView = targetView.parentView;
+            }
+          }
         }
       }, subscriptionManager);
     }
@@ -338,34 +378,24 @@ public class View {
   // ########################################################################
   // Mouse handling
   // ########################################################################
-  public void mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
-    if (parentView != null) {
-      parentView.mousePressed(mouseX, mouseY, pmouseX, pmouseY);
-    }
+  public boolean mousePressed(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+    return false;
   }
 
-  public void mouseReleased(float mouseX, float mouseY, float pmouseX, float pmouseY) {
-    if (parentView != null) {
-      parentView.mouseReleased(mouseX, mouseY, pmouseX, pmouseY);
-    }
+  public boolean mouseReleased(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+    return false;
   }
 
-  public void mouseMoved(float mouseX, float mouseY, float pmouseX, float pmouseY) {
-    if (parentView != null) {
-      parentView.mouseMoved(mouseX, mouseY, pmouseX, pmouseY);
-    }
+  public boolean mouseMoved(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+    return false;
   }
 
-  public void mouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
-    if (parentView != null) {
-      parentView.mouseMoved(mouseX, mouseY, pmouseX, pmouseY);
-    }
+  public boolean mouseDragged(float mouseX, float mouseY, float pmouseX, float pmouseY) {
+    return false;
   }
 
-  public void mouseWheel(float mouseX, float mouseY, int count) {
-    if (parentView != null) {
-      parentView.mouseWheel(mouseX, mouseY, count);
-    }
+  public boolean mouseWheel(float mouseX, float mouseY, int count) {
+    return false;
   }
 
 

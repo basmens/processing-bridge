@@ -15,7 +15,7 @@ public class Subject<T> {
   }
 
   public ArrayList<T> getSubscribers() {
-    return subscribers;
+    return new ArrayList<T>(subscribers);
   }
 
   public Subscription<?> subscribe(T observer) {

@@ -40,6 +40,10 @@ public class PApplet extends processing.core.PApplet {
 
   @Override
   public void mousePressed(MouseEvent event) {
+    if(key < SharedPApplet.keysPressed.length) {
+      SharedPApplet.keysPressed[key] = true;
+    }
+
     for (MouseEventsHandler s: SharedPApplet.mouseEvents.getSubscribers()) {
       s.mousePressed(mouseX, mouseY, pmouseX, pmouseY);
     } 
@@ -47,6 +51,10 @@ public class PApplet extends processing.core.PApplet {
 
   @Override
   public void mouseReleased(MouseEvent event) {
+    if(key < SharedPApplet.keysPressed.length) {
+      SharedPApplet.keysPressed[key] = false;
+    }
+
     for (MouseEventsHandler s: SharedPApplet.mouseEvents.getSubscribers()) {
       s.mouseReleased(mouseX, mouseY, pmouseX, pmouseY);
     } 
